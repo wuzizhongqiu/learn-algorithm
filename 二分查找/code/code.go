@@ -78,3 +78,35 @@ func findPeakElement(nums []int) int {
 	}
 	return right
 }
+
+// 寻找旋转排序数组中的最小值
+func findMin(nums []int) int {
+	n := len(nums) - 1
+	left, right := 0, n
+	for left < right {
+		mid := left + (right-left)/2
+		if nums[mid] > nums[n] {
+			left = mid + 1
+		} else if nums[mid] < nums[n] {
+			right = mid
+		}
+	}
+	return nums[left]
+}
+
+// 点名
+func takeAttendance(records []int) int {
+	left, right := 0, len(records)-1
+	for left < right {
+		mid := left+(right-left)/2
+		if records[mid] == mid {
+			left = mid+1
+		} else {
+			right = mid
+		}
+	}
+	if records[right] == right {
+		return right+1
+	}
+	return right
+}
