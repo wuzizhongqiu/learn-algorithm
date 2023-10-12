@@ -40,3 +40,25 @@ func duplicateZeros(arr []int) {
 		right--
 	}
 }
+
+// 快乐数
+func isHappy(n int) bool {
+	Sum := func(n int) int { // 进行一次快乐数的计算
+		sum := 0
+		for n > 0 {
+			tmp := n%10
+			sum += tmp*tmp
+			n /= 10
+		}
+		return sum
+	}
+	fast, slow := n, n
+	for {
+		slow = Sum(slow)
+		fast = Sum(Sum(fast))
+		if fast == slow {
+			break;
+		}
+	}
+	return fast == 1
+}
