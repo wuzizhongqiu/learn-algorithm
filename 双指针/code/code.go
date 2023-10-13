@@ -46,8 +46,8 @@ func isHappy(n int) bool {
 	Sum := func(n int) int { // 进行一次快乐数的计算
 		sum := 0
 		for n > 0 {
-			tmp := n%10
-			sum += tmp*tmp
+			tmp := n % 10
+			sum += tmp * tmp
 			n /= 10
 		}
 		return sum
@@ -57,8 +57,37 @@ func isHappy(n int) bool {
 		slow = Sum(slow)
 		fast = Sum(Sum(fast))
 		if fast == slow {
-			break;
+			break
 		}
 	}
 	return fast == 1
+}
+
+// 盛最多水的容器
+func maxArea(height []int) int {
+	left, right, max := 0, len(height)-1, 0
+	for left < right {
+		tmp := Min(height[left], height[right]) * (right - left) // 计算当前容量
+		max = Max(max, tmp)                                      // 迭代出最大容量
+		if height[left] > height[right] {
+			right--
+		} else {
+			left++
+		}
+	}
+	return max
+}
+
+func Min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
