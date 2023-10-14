@@ -1,5 +1,7 @@
 package code
 
+import "sort"
+
 // 移动零
 func moveZeroes(nums []int) {
 	slow, fast := 0, 0
@@ -90,4 +92,62 @@ func Max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+// 有效三角形的个数
+func triangleNumber(nums []int) int {
+	sort.Ints(nums)
+	ans := 0
+	for i := len(nums) - 1; i >= 0; i-- {
+		left, right := 0, i-1
+		for left < right {
+			if (nums[left] + nums[right]) > nums[i] {
+				ans += (right - left)
+				right--
+			} else {
+				left++
+			}
+		}
+	}
+	return ans
+}
+
+// 三数之和
+func threeSum(nums []int) [][]int {
+	sort.Ints(nums)
+	var ans [][]int
+	n := len(nums) - 1
+	for i, v := range nums[:n-1] {
+		if i != 0 && v == nums[i-1] { // 跳过重复数字
+			continue
+		}
+		if v+nums[i+1]+nums[i+2] > 0 { // 三数相加无论如何都会 > 0, 不需要再遍历
+			break
+		}
+		if v+nums[n]+nums[n-1] < 0 { // 三数最大值 < 0, 让 i 继续遍历
+			continue
+		}
+		// 双指针
+		left, right := i+1, n
+		for left < right {
+			s := v + nums[left] + nums[right]
+			if s > 0 {
+				right--
+			} else if s < 0 {
+				left++
+			} else {
+				ans = append(ans, []int{v, nums[left], nums[right]})
+				// 跳过重复数字
+				for left < right && nums[left] == nums[left+1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right-1] {
+					right--
+				}
+				left++
+				right--
+			}
+		}
+	}
+	return ans
 }
