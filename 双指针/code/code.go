@@ -151,3 +151,55 @@ func threeSum(nums []int) [][]int {
 	}
 	return ans
 }
+
+// 四数之和
+func fourSum(nums []int, target int) [][]int {
+	sort.Ints(nums)
+	var ans [][]int
+	n := len(nums)-1
+	for a := 0; a < n-2; a++ {
+		value1 := nums[a]
+		if a != 0 && value1 == nums[a-1] { // 跳过重复数字
+			continue
+		}
+		if value1+nums[a+1]+nums[a+2]+nums[a+3] > target { // 四数之和 > target
+			break
+		}
+		if value1+nums[n-2]+nums[n-1]+nums[n] < target { // 四数最大和 < target
+			continue
+		}
+		for b := a+1; b < n-1; b++ {
+			value2 := nums[b]
+			if b != a+1 && value2 == nums[b-1] { // 跳过重复数字
+				continue
+			}
+			if value1+value2+nums[b+1]+nums[b+2] > target { // 四数之和 > target
+				break
+			}
+			if value1+value2+nums[n-1]+nums[n] < target { // 四数最大和 < target
+				continue
+			}
+			left, right := b+1, n
+			for left < right {
+				sum := value1+value2+nums[left]+nums[right]
+				if sum > target {
+					right--
+				} else if sum < target {
+					left++
+				} else {
+					ans = append(ans, []int{value1, value2, nums[left], nums[right]})
+					// 跳过重复数字
+					for left < right && nums[left] == nums[left+1] {
+						left++
+					}
+					for left < right && nums[right] == nums[right-1] {
+						right--
+					}
+					left++
+					right--
+				}
+			}
+		}
+	}
+	return ans
+}
