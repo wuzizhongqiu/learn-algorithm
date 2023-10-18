@@ -27,3 +27,25 @@ func min(a, b int) int {
 	}
 	return a
 }
+
+// 无重复字符的最长子串
+func lengthOfLongestSubstring(s string) int {
+	win := [128]bool{}
+	left, len := 0, 0
+	for right, v := range s {
+		for win[v] == true { // 出现了重复的字符，开始循环去重（代码的核心）
+			win[s[left]] = false
+			left++
+		}
+		win[v] = true
+		len = max(len, right-left+1)
+	}
+	return len
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
