@@ -43,6 +43,31 @@ func lengthOfLongestSubstring(s string) int {
 	return len
 }
 
+//func max(a, b int) int {
+//	if a > b {
+//		return a
+//	}
+//	return b
+//}
+
+// 最大连续1的个数 III
+func longestOnes(nums []int, k int) int {
+	left, cnt0, len := 0, 0, 0
+	for right, v := range nums {
+		if v == 0 {
+			cnt0++
+		}
+		for cnt0 > k {
+			if nums[left] == 0 {
+				cnt0--
+			}
+			left++
+		}
+		len = max(len, right-left+1)
+	}
+	return len
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
