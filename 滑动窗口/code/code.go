@@ -74,3 +74,36 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// 将 x 减到 0 的最小操作数
+func minOperations(nums []int, x int) int {
+	left, right, sum, lenth, target := 0, 0, 0, math.MaxInt32, -x
+	for _, v := range nums {
+		target += v
+	}
+	if target < 0 { // 如果全加上都达不到要求就直接返回
+		return -1
+	}
+	for right < len(nums) {
+		sum += nums[right]
+		right++
+		for sum > target {
+			sum -= nums[left]
+			left++
+		}
+		if sum == target {
+			lenth = min(lenth, len(nums)-(right-left))
+		}
+	}
+	if lenth == math.MaxInt32 {
+		return -1
+	}
+	return lenth
+}
+
+//func min(a, b int) int {
+//	if a > b {
+//		return b
+//	}
+//	return a
+//}
