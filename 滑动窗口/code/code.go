@@ -107,3 +107,28 @@ func minOperations(nums []int, x int) int {
 //	}
 //	return a
 //}
+
+// 水果成篮
+func totalFruit(fruits []int) int {
+	win := map[int]int{}
+	lenth, left := 0, 0
+	for right, v := range fruits {
+		win[v]++
+		for len(win) > 2 {
+			win[fruits[left]]--
+			if win[fruits[left]] == 0 {
+				delete(win, fruits[left])
+			}
+			left++
+		}
+		lenth = max(lenth, right-left+1)
+	}
+	return lenth
+}
+
+//func max(a, b int) int {
+//	if a > b {
+//		return a
+//	}
+//	return b
+//}
