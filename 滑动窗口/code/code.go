@@ -132,3 +132,33 @@ func totalFruit(fruits []int) int {
 //	}
 //	return b
 //}
+
+// 找到字符串中所有字母异位词
+func findAnagrams(s string, p string) (ans []int) {
+	lens, lenp := len(s), len(p)
+	if lenp > lens { // 如果 p 比 s 长就不用找了
+		return
+	}
+
+	var wins, winp [26]int
+	for _, v := range p {
+		winp[v-'a']++
+	}
+
+	left, right := 0, 0
+	for right < lens {
+		wins[s[right]-'a']++ // 入窗口
+		right++
+		if wins == winp {
+			ans = append(ans, left)
+			wins[s[left]-'a']-- // 出窗口
+			left++
+		}
+		if right-left+1 > lenp {
+			wins[s[left]-'a']-- // 出窗口
+			left++
+		}
+	}
+
+	return ans
+}
