@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "syncTest/goroutinePool"
 
+func main() {
+	goroutinePool.TestPool()
 }
