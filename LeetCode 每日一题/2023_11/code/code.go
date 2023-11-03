@@ -85,3 +85,34 @@ func countPoints(rings string) (ans int) {
 	}
 	return ans
 }
+
+type Node struct {
+	Val   int
+	Left  *Node
+	Right *Node
+	Next  *Node
+}
+
+// 填充每个节点的下一个右侧节点指针 II
+func connect(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+	Queue := []*Node{root}
+	for Queue != nil {
+		tmp := Queue
+		Queue = nil
+		for i, node := range tmp {
+			if i > 0 { // 层序过程中，连接一下指针
+				tmp[i-1].Next = node
+			}
+			if node.Left != nil {
+				Queue = append(Queue, node.Left)
+			}
+			if node.Right != nil {
+				Queue = append(Queue, node.Right)
+			}
+		}
+	}
+	return root
+}
