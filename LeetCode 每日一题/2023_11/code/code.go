@@ -116,3 +116,22 @@ func connect(root *Node) *Node {
 	}
 	return root
 }
+
+// 数组中两个数的最大异或值
+func findMaximumXOR(nums []int) (ans int) {
+	mask := 0
+	for i := 30; i >= 0; i-- { // 从最高位开始判断
+		mp := map[int]bool{}
+		mask |= 1 << i           // 把第 i 位, 置为 1
+		checkAns := ans | 1<<i   // 将 checkAns的 第 i 位, 置为 1
+		for _, v := range nums { // 遍历 nums 数组
+			v &= mask           // i 位之后全置为 0
+			if mp[checkAns^v] { // 如果存在两个数异或等于 checkAns
+				ans = checkAns // checkAns 成真，更新 ans
+				break
+			}
+			mp[v] = true // 将 v 塞进 map
+		}
+	}
+	return ans
+}
