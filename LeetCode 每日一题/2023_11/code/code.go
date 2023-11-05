@@ -135,3 +135,30 @@ func findMaximumXOR(nums []int) (ans int) {
 	}
 	return ans
 }
+
+// 重复的DNA序列
+func findRepeatedDnaSequencesM(s string) (ans []string) {
+	mp := map[string]int{}
+	for i := 0; i <= len(s)-10; i++ {
+		str := s[i : i+10]
+		mp[str]++
+	}
+	for k, v := range mp {
+		if v >= 2 {
+			ans = append(ans, k)
+		}
+	}
+	return ans
+}
+
+func findRepeatedDnaSequences(s string) (ans []string) {
+	mp := map[string]int{}
+	for i := 0; i <= len(s)-10; i++ {
+		sub := s[i : i+10]
+		mp[sub]++
+		if mp[sub] == 2 {
+			ans = append(ans, sub)
+		}
+	}
+	return ans
+}
