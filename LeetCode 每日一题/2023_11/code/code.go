@@ -162,3 +162,31 @@ func findRepeatedDnaSequences(s string) (ans []string) {
 	}
 	return ans
 }
+
+// 最大单词长度乘积
+func maxProduct(words []string) (ans int) {
+	marks := [1000]int{}
+	for i, v := range words {
+		t := 0
+		for j := 0; j < len(v); j++ { // 用 int 的低 26 位来代指字母 a-z 是否出现
+			u := v[j] - 'a'
+			t |= 1 << u
+		}
+		marks[i] = t
+	}
+	for i := 0; i < len(words); i++ {
+		for j := 0; j < i; j++ {
+			if (marks[i] & marks[j]) == 0 { // 每个字符串对应的两个 int 执行 & 操作
+				ans = max(ans, len(words[i])*len(words[j]))
+			}
+		}
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
