@@ -190,3 +190,14 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// 统计范围内的元音字符串数
+func vowelStrings(words []string, left int, right int) (ans int) {
+	mp := map[byte]int{'a': 1, 'e': 1, 'i': 1, 'o': 1, 'u': 1}
+	for i := left; i <= right; i++ {
+		if mp[words[i][0]] == 1 && mp[words[i][len(words[i])-1]] == 1 {
+			ans++
+		}
+	}
+	return ans
+}
