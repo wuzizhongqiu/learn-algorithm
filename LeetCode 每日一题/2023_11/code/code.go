@@ -184,13 +184,6 @@ func maxProduct(words []string) (ans int) {
 	return ans
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 // 统计范围内的元音字符串数
 func vowelStrings(words []string, left int, right int) (ans int) {
 	mp := map[byte]int{'a': 1, 'e': 1, 'i': 1, 'o': 1, 'u': 1}
@@ -198,6 +191,24 @@ func vowelStrings(words []string, left int, right int) (ans int) {
 		if mp[words[i][0]] == 1 && mp[words[i][len(words[i])-1]] == 1 {
 			ans++
 		}
+	}
+	return ans
+}
+
+// 最长平衡子字符串
+func findTheLongestBalancedSubstring(s string) (ans int) {
+	n := len(s)
+	for i := 0; i < n; {
+		a, b := 0, 0
+		for i < n && s[i] == '0' {
+			a++
+			i++
+		}
+		for i < n && s[i] == '1' {
+			b++
+			i++
+		}
+		ans = max(ans, min(a, b)*2)
 	}
 	return ans
 }
