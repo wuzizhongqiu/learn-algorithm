@@ -212,3 +212,68 @@ func findTheLongestBalancedSubstring(s string) (ans int) {
 	}
 	return ans
 }
+
+// 逃离火灾
+type pair struct{ x, y int }
+
+var dir = []pair{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+
+func maximumMinutes(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+	// bfs 函数：取三个数, 到达安全屋/安全屋上边/安全屋左边
+	bfs := func(q []pair) (int, int, int) {
+		time := make([][]int, m)
+		for i, _ := range time { // 给 time 数组赋值为 -1
+			time[i] = make([]int, n)
+			for j, _ := range time[i] {
+				time[i][j] = -1 // 表示未访问该点
+			}
+		}
+		for _, v := range q { // 设置起点
+			time[v.x][v.y] = 0
+		}
+		for t := 1; len(q) > 0; t++ {
+			tmp := q
+			q = nil
+			for _, v := range tmp {
+				for _, v2 := range dir {
+					// x, y 设置偏移量, 然后控制边界, grid == 0 表示能走(不是墙), time < 0 也就是 == -1 表示未访问该节点
+					if x, y := v.x+v2.x, v.y+v2.y; x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == 0 && time[x][y] < 0 {
+						time[x][y] = t
+						q = append(q, pair{x, y}) // 需要 bfs 的新坐标起点
+					}
+				}
+			}
+		}
+		return time[m-1][n-1], time[m-1][n-2], time[m-2][n-1]
+	}
+
+	manToHouseTime, m1, m2 := bfs([]pair{{0, 0}})
+	if manToHouseTime < 0 { // 人能否到安全屋
+		return -1
+	}
+
+	firPos := []pair{}
+	for i, row := range grid { // 收集火的位置
+		for j, x := range row {
+			if x == 1 {
+				firPos = append(firPos, pair{i, j})
+			}
+		}
+	}
+	fireToHouseTime, f1, f2 := bfs(firPos)
+	if fireToHouseTime < 0 { // 火能否到安全屋
+		return 1_000_000_000
+	}
+
+	d := fireToHouseTime - manToHouseTime
+	if d < 0 { // 火到安全屋的时间是否比人快
+		return -1
+	}
+
+	// 如果人需要从上面或左边进入安全屋, 与火到这两个位置的时间进行比较
+	if m1 != -1 && m1+d < f1 || m2 != -1 && m2+d < f2 {
+		return d
+	}
+	return d - 1
+}
