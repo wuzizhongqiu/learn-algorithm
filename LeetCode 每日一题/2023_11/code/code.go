@@ -1,5 +1,7 @@
 package code
 
+import "sort"
+
 // 11_1 参加会议的最多员工数
 func maximumInvitations(favorite []int) int {
 	n := len(favorite)
@@ -276,4 +278,28 @@ func maximumMinutes(grid [][]int) int {
 		return d
 	}
 	return d - 1
+}
+
+// 咒语和药水的成功对数
+func successfulPairs(spells []int, potions []int, success int64) (ans []int) {
+	sort.Ints(potions)
+	for _, v := range spells {
+		left, right := 0, len(potions)-1
+		for left < right { // 二分找出成功组合的最小下标
+			mid := left + (right-left)/2
+			sum := int64(v) * int64(potions[mid])
+			if sum >= success {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		cmp := int64(v) * int64(potions[left])
+		if cmp >= success {
+			ans = append(ans, len(potions)-right)
+		} else { // 没有一个组合成功
+			ans = append(ans, 0)
+		}
+	}
+	return ans
 }
