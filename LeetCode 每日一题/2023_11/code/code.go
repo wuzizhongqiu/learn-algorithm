@@ -303,3 +303,12 @@ func successfulPairs(spells []int, potions []int, success int64) (ans []int) {
 	}
 	return ans
 }
+
+// K 个元素的最大和
+func maximizeSum(nums []int, k int) int {
+	maxV := 0
+	for _, v := range nums {
+		maxV = max(maxV, v)
+	}
+	return (maxV + (maxV + k - 1)) * k / 2
+}
