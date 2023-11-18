@@ -331,3 +331,20 @@ func longestAlternatingSubarray(nums []int, threshold int) (ans int) {
 	}
 	return ans
 }
+
+// 数位和相等数对的最大和
+func maximumSum(nums []int) int {
+	val, ans := make([]int, 100), -1
+	for _, v := range nums {
+		t, cur := v, 0
+		for t > 0 {
+			cur += t % 10
+			t /= 10
+		}
+		if val[cur] != 0 {
+			ans = max(ans, val[cur]+v)
+		}
+		val[cur] = max(val[cur], v)
+	}
+	return ans
+}
