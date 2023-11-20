@@ -348,3 +348,14 @@ func maximumSum(nums []int) int {
 	}
 	return ans
 }
+
+// 最大子数组和
+func maxSubArray(nums []int) int {
+	ans := -100000
+	dp := make([]int, len(nums)+1)
+	for i := 1; i <= len(nums); i++ {
+		dp[i] = max(nums[i-1], nums[i-1]+dp[i-1])
+		ans = max(ans, dp[i])
+	}
+	return ans
+}
