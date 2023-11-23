@@ -1,6 +1,9 @@
 package code
 
-import "sort"
+import (
+	"sort"
+	"strings"
+)
 
 // 11_1 参加会议的最多员工数
 func maximumInvitations(favorite []int) int {
@@ -373,4 +376,9 @@ func minDeletion(nums []int) (cnt int) {
 		cnt++
 	}
 	return cnt
+}
+
+// HTML 实体解析器
+func entityParser(s string) (ans string) {
+	return strings.NewReplacer(`&quot;`, `"`, `&apos;`, `'`, `&gt;`, `>`, `&lt;`, `<`, `&frasl;`, `/`, `&amp;`, `&`).Replace(s)
 }
