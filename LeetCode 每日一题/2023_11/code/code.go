@@ -382,3 +382,17 @@ func minDeletion(nums []int) (cnt int) {
 func entityParser(s string) (ans string) {
 	return strings.NewReplacer(`&quot;`, `"`, `&apos;`, `'`, `&gt;`, `>`, `&lt;`, `<`, `&frasl;`, `/`, `&amp;`, `&`).Replace(s)
 }
+
+// 统计和小于目标的下标对数目（暴力/双指针）
+func countPairs(nums []int, target int) (ans int) {
+	sort.Ints(nums)
+	for left, right := 0, len(nums)-1; left < right; left++ {
+		for right >= 0 && nums[left]+nums[right] >= target {
+			right--
+		}
+		if left < right {
+			ans += right - left
+		}
+	}
+	return ans
+}
