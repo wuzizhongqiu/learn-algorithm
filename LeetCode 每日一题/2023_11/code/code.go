@@ -396,3 +396,61 @@ func countPairs(nums []int, target int) (ans int) {
 	}
 	return ans
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+var ans int
+
+func PseudoPalindromicPaths(root *TreeNode) int {
+	cnt := make([]int, 10)
+	dfs(root, cnt)
+	return ans
+}
+
+func dfs(root *TreeNode, cnt []int) {
+	if root == nil {
+		return
+	}
+	cnt[root.Val]++
+	if root.Left == nil && root.Right == nil {
+		if isFalsePalindromes(cnt) {
+			ans++
+		}
+		return
+	}
+	dfs(root.Left, cnt)
+	dfs(root.Right, cnt)
+}
+
+func isFalsePalindromes(cnt []int) bool {
+	odd := 0
+	for _, v := range cnt {
+		if v%2 == 1 {
+			odd++
+		}
+	}
+	return odd <= 1
+}
+
+func pseudoPalindromicPaths(root *TreeNode) int {
+	return dfs2(root, 0)
+}
+
+// 二叉树中的伪回文路径
+func dfs2(root *TreeNode, mask int) int {
+	if root == nil {
+		return 0
+	}
+	mask ^= 1 << root.Val        // 修改 root.Val 出现次数的奇偶性
+	if root.Left == root.Right { // root 是叶子节点
+		if mask&(mask-1) == 0 {
+			return 1
+		}
+		return 0
+	}
+	return dfs2(root.Left, mask) + dfs2(root.Right, mask)
+}
