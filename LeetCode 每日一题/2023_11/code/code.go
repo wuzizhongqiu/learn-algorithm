@@ -454,3 +454,79 @@ func dfs2(root *TreeNode, mask int) int {
 	}
 	return dfs2(root.Left, mask) + dfs2(root.Right, mask)
 }
+
+// FrontMiddleBackQueue 设计前中后队列（数组/链表/双端队列）
+type FrontMiddleBackQueue struct {
+	queue []int
+	size  int
+}
+
+func Constructor() FrontMiddleBackQueue {
+	return FrontMiddleBackQueue{
+		queue: make([]int, 1001),
+		size:  0,
+	}
+}
+
+func (this *FrontMiddleBackQueue) PushFront(val int) {
+	tmp := make([]int, 1001)
+	tmp[0] = val
+	for i := 1; i < this.size+1; i++ {
+		tmp[i] = this.queue[i-1]
+	}
+	this.queue = tmp
+	this.size++
+}
+
+func (this *FrontMiddleBackQueue) PushMiddle(val int) {
+	tmp := make([]int, 1001)
+	for i := 0; i < this.size/2; i++ {
+		tmp[i] = this.queue[i]
+	}
+	tmp[this.size/2] = val
+	for i := this.size/2 + 1; i < this.size+1; i++ {
+		tmp[i] = this.queue[i-1]
+	}
+	this.queue = tmp
+	this.size++
+}
+
+func (this *FrontMiddleBackQueue) PushBack(val int) {
+	tmp := make([]int, 1001)
+	for i := 0; i < this.size; i++ {
+		tmp[i] = this.queue[i]
+	}
+	tmp[this.size] = val
+	this.queue = tmp
+	this.size++
+}
+
+func (this *FrontMiddleBackQueue) PopFront() int {
+	if this.size == 0 {
+		return -1
+	}
+	ans := this.queue[0]
+	this.queue = this.queue[1:]
+	this.size--
+	return ans
+}
+
+func (this *FrontMiddleBackQueue) PopMiddle() int {
+	if this.size == 0 {
+		return -1
+	}
+	ans := this.queue[(this.size-1)/2]
+	this.queue = append(this.queue[:(this.size-1)/2], this.queue[(this.size-1)/2+1:]...)
+	this.size--
+	return ans
+}
+
+func (this *FrontMiddleBackQueue) PopBack() int {
+	if this.size == 0 {
+		return -1
+	}
+	ans := this.queue[this.size-1]
+	this.queue = this.queue[:this.size-1]
+	this.size--
+	return ans
+}
