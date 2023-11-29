@@ -530,3 +530,39 @@ func (this *FrontMiddleBackQueue) PopBack() int {
 	this.size--
 	return ans
 }
+
+// SmallestInfiniteSet 无限集中的最小数字（哈希/堆）
+type SmallestInfiniteSet struct {
+	mp   map[int]bool
+	less int
+}
+
+func Constructor2() SmallestInfiniteSet {
+	tmp := map[int]bool{}
+	for i := 1; i < 1001; i++ {
+		tmp[i] = true
+	}
+	return SmallestInfiniteSet{
+		mp:   tmp,
+		less: 1,
+	}
+}
+
+func (this *SmallestInfiniteSet) PopSmallest() int {
+	this.mp[this.less] = false
+	tmp := this.less
+	for i := 1; i < 1001; i++ {
+		if this.mp[i] == true {
+			this.less = i
+			break
+		}
+	}
+	return tmp
+}
+
+func (this *SmallestInfiniteSet) AddBack(num int) {
+	this.mp[num] = true
+	if num < this.less {
+		this.less = num
+	}
+}
