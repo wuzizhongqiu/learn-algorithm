@@ -1,6 +1,7 @@
 package code
 
 import (
+	"slices"
 	"sort"
 	"strings"
 )
@@ -565,4 +566,29 @@ func (this *SmallestInfiniteSet) AddBack(num int) {
 	if num < this.less {
 		this.less = num
 	}
+}
+
+// 确定两个字符串是否接近 （数组、排序、哈希/位运算、脑筋急转弯）
+func closeStrings(word1 string, word2 string) bool {
+	if len(word1) != len(word2) {
+		return false
+	}
+	var c1, c2 [26]int
+	for _, v := range word1 {
+		c1[v-'a']++
+	}
+	for _, v := range word2 {
+		c2[v-'a']++
+	}
+	for i := 0; i < 26; i++ {
+		if c1[i] == 0 && c2[i] == 0 { // 如果都不存在这个数字，就继续遍历
+			continue
+		}
+		if c1[i] == 0 || c2[i] == 0 { // 一个存在一个不存在，返回 false
+			return false
+		}
+	}
+	slices.Sort(c1[:])
+	slices.Sort(c2[:])
+	return slices.Equal(c1[:], c2[:])
 }
