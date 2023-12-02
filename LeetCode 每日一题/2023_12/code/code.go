@@ -22,3 +22,21 @@ func firstCompleteIndex(arr []int, mat [][]int) int {
 	}
 	return -1
 }
+
+// 2023_12_2 拼车（模拟/差分）
+func carPooling(trips [][]int, capacity int) bool {
+	var numPeople [1001]int
+	for _, v := range trips {
+		n, a, b := v[0], v[1], v[2]
+		numPeople[a] += n
+		numPeople[b] -= n
+	}
+	curCap := 0
+	for _, v := range numPeople {
+		curCap += v
+		if curCap > capacity {
+			return false
+		}
+	}
+	return true
+}
