@@ -40,3 +40,17 @@ func carPooling(trips [][]int, capacity int) bool {
 	}
 	return true
 }
+
+// 【LeetCode】每日一题 2023_12_3 可获得的最大点数（前缀和/滑动窗口/贪心）
+func maxScore(cardPoints []int, k int) int {
+	front := 0
+	for i := 0; i < k; i++ {
+		front += cardPoints[i]
+	}
+	ans := front
+	for i := 1; i <= k; i++ {
+		front += cardPoints[len(cardPoints)-i] - cardPoints[k-i]
+		ans = max(ans, front)
+	}
+	return ans
+}
