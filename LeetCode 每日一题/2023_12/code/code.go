@@ -54,3 +54,26 @@ func maxScore(cardPoints []int, k int) int {
 	}
 	return ans
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// 【LeetCode】每日一题 2023_12_4 从二叉搜索树到更大和树（二叉树）
+func bstToGst(root *TreeNode) *TreeNode {
+	sum := 0
+	var convert func(*TreeNode)
+	convert = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+		convert(node.Right) // 右
+		sum += node.Val     // 累加
+		node.Val = sum      // 根
+		convert(node.Left)  // 左
+	}
+	convert(root)
+	return root
+}
