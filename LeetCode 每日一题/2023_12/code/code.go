@@ -77,3 +77,30 @@ func bstToGst(root *TreeNode) *TreeNode {
 	convert(root)
 	return root
 }
+
+// 【LeetCode】每日一题 2023_12_5 到达首都的最少油耗（树，搜索）
+func minimumFuelCost(roads [][]int, seats int) (ans int64) {
+	g := make([][]int, len(roads)+1)
+	for _, v := range roads { // g[x] 数组存的是与 x 相连的节点
+		x, y := v[0], v[1]
+		g[x] = append(g[x], y)
+		g[y] = append(g[y], x)
+	}
+	var dfs func(int, int) int
+	dfs = func(cur, father int) int {
+		size := 1
+		for _, child := range g[cur] {
+			// 只从父节点向子节点搜索
+			if child != father {
+				// v 从子节点变当前节点, cur 从当前节点变父节点, 统计子树大小
+				size += dfs(child, cur)
+			}
+		}
+		if cur > 0 { // cur 不是根节点了, 可以计算油耗了
+			ans += int64((size-1)/seats + 1)
+		}
+		return size
+	}
+	dfs(0, -1)
+	return ans
+}
