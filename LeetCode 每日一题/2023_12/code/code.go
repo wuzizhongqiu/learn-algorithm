@@ -104,3 +104,28 @@ func minimumFuelCost(roads [][]int, seats int) (ans int64) {
 	dfs(0, -1)
 	return ans
 }
+
+// 【LeetCode】每日一题 2023_12_7 重新规划路线（DFS/BFS）
+func minReorder(n int, connections [][]int) (ans int) {
+	g := make([][][]int, n)
+	for _, v := range connections {
+		x, y := v[0], v[1]
+		// 第一个参数是正常存坐标, 第二个参数代表的是指向, 指向为 1 代表 x->y
+		g[x] = append(g[x], []int{y, 1})
+		g[y] = append(g[y], []int{x, 0})
+	}
+	var dfs func(int, int)
+	dfs = func(cur, father int) {
+		for _, v := range g[cur] {
+			if v[0] != father { // 只向叶子节点 dfs
+				if v[1] == 1 {  // 如果是从 0 节点方向往外指, 就让 ans++
+					ans++
+				}
+				dfs(v[0], cur)
+			}
+		}
+	}
+	dfs(0, -1)
+	return ans
+}
+
