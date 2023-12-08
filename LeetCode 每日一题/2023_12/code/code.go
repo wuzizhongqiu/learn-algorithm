@@ -118,7 +118,7 @@ func minReorder(n int, connections [][]int) (ans int) {
 	dfs = func(cur, father int) {
 		for _, v := range g[cur] {
 			if v[0] != father { // 只向叶子节点 dfs
-				if v[1] == 1 {  // 如果是从 0 节点方向往外指, 就让 ans++
+				if v[1] == 1 { // 如果是从 0 节点方向往外指, 就让 ans++
 					ans++
 				}
 				dfs(v[0], cur)
@@ -129,3 +129,20 @@ func minReorder(n int, connections [][]int) (ans int) {
 	return ans
 }
 
+// 【LeetCode】每日一题 2023_12_7 出租车的最大盈利（动态规划）
+func maxTaxiEarnings(n int, rides [][]int) int64 {
+	type pair struct{ s, p int } // 一个存上车点, 一个存盈利
+	group := make([][]pair, n+1)
+	for _, r := range rides {
+		start, end, tip := r[0], r[1], r[2]
+		group[end] = append(group[end], pair{start, end - start + tip}) // 根据 end 存 pair
+	}
+	dp := make([]int64, n+1)
+	for i := 2; i <= n; i++ {
+		dp[i] = dp[i-1] // 填 dp 数组, 无论有没有更改, 都先把上一个最大盈利继承一下
+		for _, v := range group[i] {
+			dp[i] = max(dp[i], dp[v.s]+int64(v.p)) // 遍历所有 end 为 i 的情况的最大盈利
+		}
+	}
+	return dp[n]
+}
