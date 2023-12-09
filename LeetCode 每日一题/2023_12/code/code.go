@@ -146,3 +146,23 @@ func maxTaxiEarnings(n int, rides [][]int) int64 {
 	}
 	return dp[n]
 }
+
+// 【LeetCode】每日一题 2023_12_9 下一个更大的数值平衡数（枚举/打表二分）
+func nextBeautifulNumber(n int) int {
+	for i := n + 1; ; i++ { // 枚举
+		cnt := [10]int{}
+		for tmp := i; tmp > 0; tmp /= 10 {
+			cnt[tmp%10]++
+		}
+		isBeautifulNumber := true
+		for j := i; j > 0; j /= 10 { // 判断是不是最小数值平衡数
+			if j%10 != cnt[j%10] {
+				isBeautifulNumber = false
+				break
+			}
+		}
+		if isBeautifulNumber == true {
+			return i
+		}
+	}
+}
