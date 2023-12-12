@@ -179,7 +179,6 @@ func climbStairs(n int) int {
 	return dp[n]
 }
 
-
 // 1631. 最小体力消耗路径
 type unionFind struct {
 	parent, size []int
@@ -253,4 +252,26 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+// 【LeetCode】每日一题 2023_12_12 下一个更大元素 IV（堆，优先级队列/单调栈）
+func secondGreaterElement(nums []int) []int {
+	ans := make([]int, len(nums))
+	for i, _ := range nums { // 初始化成 -1
+		ans[i] = -1
+	}
+	st1, st2 := []int{}, []int{}
+	for i, v := range nums {
+		for len(st2) > 0 && nums[st2[len(st2)-1]] < v { // 这次遍历的值比 st2 栈顶大
+			ans[st2[len(st2)-1]] = v
+			st2 = st2[:len(st2)-1]
+		}
+		j := len(st1) - 1
+		for j >= 0 && nums[st1[j]] < v { // 找到 v 的第一大整数
+			j--
+		}
+		st2 = append(st2, st1[j+1:]...) // 将 v 的第一大整数及其之前的区间直接从栈 1 移入栈 2
+		st1 = append(st1[:j+1], i)      // 每次将当前位置的下标入栈 1
+	}
+	return ans
 }
