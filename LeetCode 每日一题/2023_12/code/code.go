@@ -275,3 +275,20 @@ func secondGreaterElement(nums []int) []int {
 	}
 	return ans
 }
+
+// 【LeetCode】每日一题 2023_12_13 字典序最小回文串（双指针，模拟）
+func makeSmallestPalindrome(str string) string {
+	left, right := 0, len(str)-1
+	s := []byte(str)
+	for left < right {
+		if s[left] < s[right] {
+			s[right] = s[left]
+		} else {
+			s[left] = s[right]
+		}
+		left++
+		right--
+	}
+	return string(s)
+}
+
