@@ -339,3 +339,16 @@ func findPeakElement(nums []int) int {
 	}
 	return right
 }
+
+// 【LeetCode】每日一题 2023_12_20 判别首字母缩略词（简单题）
+func isAcronym(words []string, s string) bool {
+	if len(words) != len(s) {
+		return false
+	}
+	for i := 0; i < len(words); i++ {
+		if words[i][0] != s[i] {
+			return false
+		}
+	}
+	return true
+}
